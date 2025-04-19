@@ -11,7 +11,6 @@ MainWindow::MainWindow(QWidget *parent)
       view(new QGraphicsView(scene)),
       timer(new QTimer(this))
 {
-    // 1. Настройка размеров главного окна
     setFixedSize(1024, 600);
     scene->setSceneRect(0, 0, 1022, 573);
 

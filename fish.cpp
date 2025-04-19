@@ -31,35 +31,40 @@ void Fish::advance(int phase) {
 
     keepInBounds();
 }
-
 void Fish::keepInBounds() {
     if (!scene()) return;
 
     QRectF sceneRect = scene()->sceneRect();
-    qreal padding = 50;
+    qreal padding = 30;
     bool changed = false;
+    QPointF newPos = pos();
 
     if (x() < sceneRect.left() + padding) {
         direction = M_PI - direction;
+        newPos.setX(sceneRect.left() + padding);
         changed = true;
     }
-    else if (x() > sceneRect.right() - padding) {
+    else if (x() > sceneRect.right() - padding - boundingRect().width()) {
         direction = M_PI - direction;
+        newPos.setX(sceneRect.right() - padding - boundingRect().width());
         changed = true;
     }
 
     if (y() < sceneRect.top() + padding) {
         direction = -direction;
+        newPos.setY(sceneRect.top() + padding);
         changed = true;
     }
-    else if (y() > sceneRect.bottom() - padding) {
+    else if (y() > sceneRect.bottom() - padding - boundingRect().height()) {
         direction = -direction;
+        newPos.setY(sceneRect.bottom() - padding - boundingRect().height());
         changed = true;
     }
 
     if (changed) {
         setRotation(qRadiansToDegrees(direction));
-        speed *= 0.8;
+        setPos(newPos);
+        speed *= 0.5;
     }
 }
 
