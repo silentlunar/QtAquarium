@@ -4,6 +4,7 @@
 #include <QVBoxLayout>
 #include <QGroupBox>
 #include <QMouseEvent>
+#include <QPushButton>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -11,18 +12,17 @@ MainWindow::MainWindow(QWidget *parent)
       view(new QGraphicsView(scene)),
       timer(new QTimer(this))
 {
-    setFixedSize(1024, 600);
-    scene->setSceneRect(0, 0, 1022, 573);
+    setFixedSize(1250, 600);
+    scene->setSceneRect(0, 0, 1250, 600);
 
     QPixmap bgPix(":/aquarium.jpg");
-
     QGraphicsPixmapItem *background = scene->addPixmap(bgPix);
     background->setPos(0, 0);
 
     view->setRenderHint(QPainter::Antialiasing);
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    view->setFixedSize(1022, 573);
+    view->setFixedSize(1250, 600);
 
     setupButtons();
 
@@ -31,46 +31,114 @@ MainWindow::MainWindow(QWidget *parent)
     timer->start(30);
 }
 
-void MainWindow::setupButtons() {
+void MainWindow::setupButtons()
+{
     QWidget *centralWidget = new QWidget(this);
     QHBoxLayout *mainLayout = new QHBoxLayout(centralWidget);
     QVBoxLayout *controlLayout = new QVBoxLayout();
 
+    // Группа кнопок для рыб
     QGroupBox *fishGroup = new QGroupBox("Рыбы");
     QVBoxLayout *fishLayout = new QVBoxLayout();
 
-    QPushButton *btnGoldFish = new QPushButton("Золотая рыбка");
-    QPushButton *btnClownFish = new QPushButton("Рыба-клоун");
-    QPushButton *btnBlueTang = new QPushButton("Голубой хирург");
+    QStringList fishButtons = {
+        "Золотая рыбка", "Рыба-клоун", "Голубой хирург",
+        "Карп кои", "Синий неон", "Рыба-ангел", "Гуппи", "Рыба-бабочка",
+        "Медуза"
+    };
 
-    connect(btnGoldFish, &QPushButton::clicked, this, &MainWindow::addFishFirst);
-    connect(btnClownFish, &QPushButton::clicked, this, &MainWindow::addFishSecond);
-    connect(btnBlueTang, &QPushButton::clicked, this, &MainWindow::addFishThird);
+    for (int i = 0; i < fishButtons.size(); ++i) {
+        QPushButton *btn = new QPushButton(fishButtons[i]);
+        fishLayout->addWidget(btn);
 
-    fishLayout->addWidget(btnGoldFish);
-    fishLayout->addWidget(btnClownFish);
-    fishLayout->addWidget(btnBlueTang);
+        switch (i) {
+            case 0: connect(btn, &QPushButton::clicked, this, &MainWindow::addGoldfish); break;
+            case 1: connect(btn, &QPushButton::clicked, this, &MainWindow::addClownfish); break;
+            case 2: connect(btn, &QPushButton::clicked, this, &MainWindow::addBlueTang); break;
+            case 3: connect(btn, &QPushButton::clicked, this, &MainWindow::addFishKoi); break;
+            case 4: connect(btn, &QPushButton::clicked, this, &MainWindow::addFishBlueNeon); break;
+            case 5: connect(btn, &QPushButton::clicked, this, &MainWindow::addFishAngelfish); break;
+            case 6: connect(btn, &QPushButton::clicked, this, &MainWindow::addFishGuppy); break;
+            case 7: connect(btn, &QPushButton::clicked, this, &MainWindow::addFishButterfly); break;
+            case 8: connect(btn, &QPushButton::clicked, this, &MainWindow::addFishJellyfish); break;
+        }
+    }
     fishGroup->setLayout(fishLayout);
 
+    // Группа кнопок для декораций
     QGroupBox *decorGroup = new QGroupBox("Украшения");
     QVBoxLayout *decorLayout = new QVBoxLayout();
 
-    QPushButton *btnPlant = new QPushButton("Растение");
-    QPushButton *btnRock = new QPushButton("Камень");
-    QPushButton *btnShell = new QPushButton("Ракушка");
+    // Растения (5 видов)
+    QGroupBox *plantGroup = new QGroupBox("Растения");
+    QHBoxLayout *plantLayout = new QHBoxLayout();
+    for (int i = 1; i <= 2; ++i) {
+        QPushButton *btn = new QPushButton(QString("%1").arg(i));
+        btn->setFixedSize(40, 30);
+        connect(btn, &QPushButton::clicked, [this, i]() {
+            selectedDecoration = QString(":/plant%1.png").arg(i);
+        });
+        plantLayout->addWidget(btn);
+    }
+    plantGroup->setLayout(plantLayout);
+
+    // Ракушки (3 вида)
+    QGroupBox *shellGroup = new QGroupBox("Ракушки");
+    QHBoxLayout *shellLayout = new QHBoxLayout();
+    for (int i = 1; i <= 3; ++i) {
+        QPushButton *btn = new QPushButton(QString("%1").arg(i));
+        btn->setFixedSize(40, 30);
+        connect(btn, &QPushButton::clicked, [this, i]() {
+            selectedDecoration = QString(":/shell%1.png").arg(i);
+        });
+        shellLayout->addWidget(btn);
+    }
+    shellGroup->setLayout(shellLayout);
+
+    // Камни (2 вида)
+    QGroupBox *rockGroup = new QGroupBox("Камни");
+    QHBoxLayout *rockLayout = new QHBoxLayout();
+    for (int i = 1; i <= 2; ++i) {
+        QPushButton *btn = new QPushButton(QString("%1").arg(i));
+        btn->setFixedSize(40, 30);
+        connect(btn, &QPushButton::clicked, [this, i]() {
+            selectedDecoration = QString(":/rock%1.png").arg(i);
+        });
+        rockLayout->addWidget(btn);
+    }
+    rockGroup->setLayout(rockLayout);
+
+    // Специальные украшения
+    QGroupBox *specialGroup = new QGroupBox("Особые");
+    QHBoxLayout *specialLayout = new QHBoxLayout();
+
+    QPushButton *btnCastle = new QPushButton("Замок");
+    QPushButton *btnStarfish = new QPushButton("Морская звезда");
     QPushButton *btnCoral = new QPushButton("Коралл");
 
-    connect(btnPlant, &QPushButton::clicked, this, &MainWindow::selectPlant);
-    connect(btnRock, &QPushButton::clicked, this, &MainWindow::selectRock);
-    connect(btnShell, &QPushButton::clicked, this, &MainWindow::selectShell);
-    connect(btnCoral, &QPushButton::clicked, this, &MainWindow::selectCoral);
+    connect(btnCastle, &QPushButton::clicked, [this]() {
+        selectedDecoration = ":/castle.png";
+    });
+    connect(btnStarfish, &QPushButton::clicked, [this]() {
+        selectedDecoration = ":/starfish.png";
+    });
+    connect(btnCoral, &QPushButton::clicked, [this]() {
+        selectedDecoration = ":/coral1.png";
+    });
 
-    decorLayout->addWidget(btnPlant);
-    decorLayout->addWidget(btnRock);
-    decorLayout->addWidget(btnShell);
-    decorLayout->addWidget(btnCoral);
+    specialLayout->addWidget(btnCastle);
+    specialLayout->addWidget(btnStarfish);
+    specialLayout->addWidget(btnCoral);
+    specialGroup->setLayout(specialLayout);
+
+    // Компоновка всех элементов декора
+    decorLayout->addWidget(plantGroup);
+    decorLayout->addWidget(shellGroup);
+    decorLayout->addWidget(rockGroup);
+    decorLayout->addWidget(specialGroup);
     decorGroup->setLayout(decorLayout);
 
+    // Основная компоновка
     controlLayout->addWidget(fishGroup);
     controlLayout->addWidget(decorGroup);
     controlLayout->addStretch();
@@ -81,14 +149,16 @@ void MainWindow::setupButtons() {
     setCentralWidget(centralWidget);
 }
 
-void MainWindow::mousePressEvent(QMouseEvent *event) {
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
     if (event->button() == Qt::LeftButton && !selectedDecoration.isEmpty()) {
         QPointF scenePos = view->mapToScene(event->pos());
         addDecoration(selectedDecoration, scenePos);
     }
 }
 
-void MainWindow::addDecoration(const QString& imagePath, const QPointF& pos) {
+void MainWindow::addDecoration(const QString& imagePath, const QPointF& pos)
+{
     QPixmap pix(imagePath);
     pix = pix.scaled(80, 80, Qt::KeepAspectRatio);
 
@@ -97,28 +167,75 @@ void MainWindow::addDecoration(const QString& imagePath, const QPointF& pos) {
     scene->addItem(item);
 }
 
-void MainWindow::addFishFirst() {
-    FishFirst *fish = new FishFirst();
+void MainWindow::addGoldfish()
+{
+    Goldfish *fish = new Goldfish();
     fish->setPos(QRandomGenerator::global()->bounded(scene->width()),
                 QRandomGenerator::global()->bounded(scene->height()));
     scene->addItem(fish);
 }
 
-void MainWindow::addFishSecond() {
-    FishSecond *fish = new FishSecond();
-    fish->setPos(QRandomGenerator::global()->bounded(scene->width()),
-                QRandomGenerator::global()->bounded(scene->height()));
-    scene->addItem(fish);
-}
-void MainWindow::addFishThird() {
-    FishThird *fish = new FishThird();
+void MainWindow::addClownfish()
+{
+    Clownfish *fish = new Clownfish();
     fish->setPos(QRandomGenerator::global()->bounded(scene->width()),
                 QRandomGenerator::global()->bounded(scene->height()));
     scene->addItem(fish);
 }
 
-// Слоты для выбора декораций
-void MainWindow::selectPlant() { selectedDecoration = ":/plant1.png"; }
-void MainWindow::selectRock() { selectedDecoration = ":/rock1.png"; }
-void MainWindow::selectShell() { selectedDecoration = ":/shell.png"; }
-void MainWindow::selectCoral() { selectedDecoration = ":/coral.png"; }
+void MainWindow::addBlueTang()
+{
+    BlueTang *fish = new BlueTang();
+    fish->setPos(QRandomGenerator::global()->bounded(scene->width()),
+                QRandomGenerator::global()->bounded(scene->height()));
+    scene->addItem(fish);
+}
+
+void MainWindow::addFishKoi()
+{
+    FishKoi *fish = new FishKoi();
+    fish->setPos(QRandomGenerator::global()->bounded(scene->width()),
+                QRandomGenerator::global()->bounded(scene->height()));
+    scene->addItem(fish);
+}
+
+void MainWindow::addFishBlueNeon()
+{
+    FishBlueNeon *fish = new FishBlueNeon();
+    fish->setPos(QRandomGenerator::global()->bounded(scene->width()),
+                QRandomGenerator::global()->bounded(scene->height()));
+    scene->addItem(fish);
+}
+
+void MainWindow::addFishAngelfish()
+{
+    FishAngelfish *fish = new FishAngelfish();
+    fish->setPos(QRandomGenerator::global()->bounded(scene->width()),
+                QRandomGenerator::global()->bounded(scene->height()));
+    scene->addItem(fish);
+}
+
+void MainWindow::addFishGuppy()
+{
+    FishGuppy *fish = new FishGuppy();
+    fish->setPos(QRandomGenerator::global()->bounded(scene->width()),
+                QRandomGenerator::global()->bounded(scene->height()));
+    scene->addItem(fish);
+}
+
+void MainWindow::addFishButterfly()
+{
+    FishButterfly *fish = new FishButterfly();
+    fish->setPos(QRandomGenerator::global()->bounded(scene->width()),
+                QRandomGenerator::global()->bounded(scene->height()));
+    scene->addItem(fish);
+}
+
+void MainWindow::addFishJellyfish()
+{
+    FishJellyfish *fish = new FishJellyfish();
+    fish->setPos(QRandomGenerator::global()->bounded(scene->width()),
+                QRandomGenerator::global()->bounded(scene->height()));
+    scene->addItem(fish);
+}
+

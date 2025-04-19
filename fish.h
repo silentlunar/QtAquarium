@@ -22,19 +22,49 @@ protected:
     void keepInBounds();
 };
 
-class FishFirst : public Fish {
+class Goldfish : public Fish {
 public:
-    explicit FishFirst(QObject *parent = nullptr);
+    explicit Goldfish(QObject *parent = nullptr);
 };
 
-class FishSecond : public Fish {
+class Clownfish : public Fish {
 public:
-    explicit FishSecond(QObject *parent = nullptr);
+    explicit Clownfish(QObject *parent = nullptr);
 };
 
-class FishThird : public Fish {
+class BlueTang : public Fish {
 public:
-    explicit FishThird(QObject *parent = nullptr);
+    explicit BlueTang(QObject *parent = nullptr);
+};
+
+class FishKoi : public Fish {
+public:
+    explicit FishKoi(QObject *parent = nullptr);
+};
+
+class FishBlueNeon : public Fish {
+public:
+    explicit FishBlueNeon(QObject *parent = nullptr);
+};
+
+class FishAngelfish : public Fish {
+public:
+    explicit FishAngelfish(QObject *parent = nullptr);
+};
+
+class FishGuppy : public Fish {
+public:
+    explicit FishGuppy(QObject *parent = nullptr);
+};
+
+class FishButterfly : public Fish {
+public:
+    explicit FishButterfly(QObject *parent = nullptr);
+};
+
+class FishJellyfish : public Fish {
+public:
+    explicit FishJellyfish(QObject *parent = nullptr);
 };
 
 #endif // FISH_H

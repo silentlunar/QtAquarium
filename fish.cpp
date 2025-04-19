@@ -1,7 +1,5 @@
 #include "fish.h"
 
-#include "fish.h"
-
 Fish::Fish(const QString& imagePath, QObject *parent)
     : QObject(parent), QGraphicsPixmapItem() {
     QPixmap pix(imagePath);
@@ -31,6 +29,7 @@ void Fish::advance(int phase) {
 
     keepInBounds();
 }
+
 void Fish::keepInBounds() {
     if (!scene()) return;
 
@@ -44,7 +43,7 @@ void Fish::keepInBounds() {
         newPos.setX(sceneRect.left() + padding);
         changed = true;
     }
-    else if (x() > sceneRect.right() - padding - boundingRect().width()) {
+    else if (x() + boundingRect().width() > sceneRect.right() - padding) {
         direction = M_PI - direction;
         newPos.setX(sceneRect.right() - padding - boundingRect().width());
         changed = true;
@@ -55,7 +54,7 @@ void Fish::keepInBounds() {
         newPos.setY(sceneRect.top() + padding);
         changed = true;
     }
-    else if (y() > sceneRect.bottom() - padding - boundingRect().height()) {
+    else if (y() + boundingRect().height() > sceneRect.bottom() - padding) {
         direction = -direction;
         newPos.setY(sceneRect.bottom() - padding - boundingRect().height());
         changed = true;
@@ -68,20 +67,64 @@ void Fish::keepInBounds() {
     }
 }
 
-FishFirst::FishFirst(QObject *parent)
-    : Fish(":/fish1.png", parent) {
+Goldfish::Goldfish(QObject *parent)
+    : Fish(":/fish3.png", parent) {
     maxSpeed = 3;
     rotationSpeed = 0.3;
 }
 
-FishSecond::FishSecond(QObject *parent)
-    : Fish(":/fish4.png", parent) {
+Clownfish::Clownfish(QObject *parent)
+    : Fish(":/fish7.png", parent) {
     maxSpeed = 4;
     rotationSpeed = 0.4;
 }
 
-FishThird::FishThird(QObject *parent)
-    : Fish(":/fish3.png", parent) {
+BlueTang::BlueTang(QObject *parent)
+    : Fish(":/fish6.png", parent) {
     maxSpeed = 5;
     rotationSpeed = 0.5;
+}
+
+FishKoi::FishKoi(QObject *parent)
+    : Fish(":/fish1.png", parent)
+{
+    maxSpeed = 2.5;
+    rotationSpeed = 0.4;
+}
+
+FishBlueNeon::FishBlueNeon(QObject *parent)
+    : Fish(":/fish2.png", parent)
+{
+    maxSpeed = 4.0;
+    rotationSpeed = 0.6;
+}
+
+FishAngelfish::FishAngelfish(QObject *parent)
+    : Fish(":/fish4.png", parent)
+{
+    maxSpeed = 3.5;
+    rotationSpeed = 0.45;
+}
+
+FishGuppy::FishGuppy(QObject *parent)
+    : Fish(":/fish8.png", parent)
+{
+    maxSpeed = 3.8;
+    rotationSpeed = 0.55;
+    setScale(0.8);
+}
+
+FishButterfly::FishButterfly(QObject *parent)
+    : Fish(":/fish9.png", parent)
+{
+    maxSpeed = 4.2;
+    rotationSpeed = 0.5;
+}
+
+FishJellyfish::FishJellyfish(QObject *parent)
+    : Fish(":/jellyfish.png", parent)
+{
+    maxSpeed = 1.8;
+    rotationSpeed = 0.25;
+    setScale(1.5);
 }

@@ -16,13 +16,15 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
 
 private slots:
-    void addFishFirst();
-    void addFishSecond();
-    void addFishThird();
-    void selectPlant();
-    void selectRock();
-    void selectShell();
-    void selectCoral();
+    void addGoldfish();
+    void addClownfish();
+    void addBlueTang();
+    void addFishKoi();
+    void addFishBlueNeon();
+    void addFishAngelfish();
+    void addFishGuppy();
+    void addFishButterfly();
+    void addFishJellyfish();
 
 private:
     void setupButtons();

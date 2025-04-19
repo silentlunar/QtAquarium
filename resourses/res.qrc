@@ -1,16 +1,26 @@
 <RCC>
     <qresource prefix="/">
         <file>aquarium.jpg</file>
-        <file>coral.png</file>
+        <file>coral1.png</file>
         <file>fish1.png</file>
         <file>fish2.png</file>
         <file>fish3.png</file>
         <file>fish4.png</file>
-        <file>fish5.gif</file>
         <file>plant1.png</file>
         <file>plant2.png</file>
         <file>rock1.png</file>
         <file>rock2.png</file>
-        <file>shell.png</file>
+        <file>shell1.png</file>
+        <file>castle.png</file>
+        <file>fish6.png</file>
+        <file>fish7.png</file>
+        <file>fish8.png</file>
+        <file>fish9.png</file>
+        <file>fish11.png</file>
+        <file>jellyfish.png</file>
+        <file>plant3.png</file>
+        <file>shell2.png</file>
+        <file>starfish.png</file>
+        <file>shell3.png</file>
     </qresource>
 </RCC>
