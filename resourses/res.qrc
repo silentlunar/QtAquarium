@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>aquarium.jpg</file>
+        <file>coral.png</file>
+        <file>fish1.png</file>
+        <file>fish2.png</file>
+        <file>fish3.png</file>
+        <file>fish4.png</file>
+        <file>fish5.gif</file>
+        <file>plant1.png</file>
+        <file>plant2.png</file>
+        <file>rock1.png</file>
+        <file>rock2.png</file>
+        <file>shell.png</file>
+    </qresource>
+</RCC>
