@@ -1,8 +1,13 @@
 #include "fish.h"
 
+#include "fish.h"
+
 Fish::Fish(const QString& imagePath, QObject *parent)
     : QObject(parent), QGraphicsPixmapItem() {
-    setPixmap(QPixmap(imagePath));
+    QPixmap pix(imagePath);
+    pix = pix.scaled(50, 30, Qt::KeepAspectRatio);
+    setPixmap(pix);
+
     speed = QRandomGenerator::global()->bounded(1, static_cast<int>(maxSpeed));
     direction = QRandomGenerator::global()->bounded(360) * M_PI / 180;
     setTransformOriginPoint(boundingRect().center());
@@ -65,7 +70,7 @@ FishFirst::FishFirst(QObject *parent)
 }
 
 FishSecond::FishSecond(QObject *parent)
-    : Fish(":/fish2.png", parent) {
+    : Fish(":/fish4.png", parent) {
     maxSpeed = 4;
     rotationSpeed = 0.4;
 }

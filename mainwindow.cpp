@@ -5,16 +5,25 @@
 #include <QGroupBox>
 #include <QMouseEvent>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
-    scene = new QGraphicsScene(this);
-    scene->setSceneRect(0, 0, 800, 600);
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent),
+      scene(new QGraphicsScene(this)),
+      view(new QGraphicsView(scene)),
+      timer(new QTimer(this))
+{
+    // 1. Настройка размеров главного окна
+    setFixedSize(1024, 600);
+    scene->setSceneRect(0, 0, 1022, 573);
 
-    // Добавление фона
-    QGraphicsPixmapItem *background = new QGraphicsPixmapItem(QPixmap(":/aquarium.jpg"));
-    scene->addItem(background);
+    QPixmap bgPix(":/aquarium.jpg");
 
-    view = new QGraphicsView(scene);
+    QGraphicsPixmapItem *background = scene->addPixmap(bgPix);
+    background->setPos(0, 0);
+
     view->setRenderHint(QPainter::Antialiasing);
+    view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    view->setFixedSize(1022, 573);
 
     setupButtons();
 
@@ -81,12 +90,14 @@ void MainWindow::mousePressEvent(QMouseEvent *event) {
 }
 
 void MainWindow::addDecoration(const QString& imagePath, const QPointF& pos) {
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap(imagePath));
+    QPixmap pix(imagePath);
+    pix = pix.scaled(80, 80, Qt::KeepAspectRatio);
+
+    QGraphicsPixmapItem *item = new QGraphicsPixmapItem(pix);
     item->setPos(pos);
     scene->addItem(item);
 }
 
-// Реализации слотов для добавления рыб
 void MainWindow::addFishFirst() {
     FishFirst *fish = new FishFirst();
     fish->setPos(QRandomGenerator::global()->bounded(scene->width()),
